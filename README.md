@@ -21,7 +21,7 @@ Centry utilises this model to ensure capital eficient trades with zero slippage 
    These pools work in a decentralised manner and is not controlled by Centry .
 
 * ### Request For Quote(R.F.Q)<br>
-  The R.F.O model provides the convenience,capital efficeincy and price discovery offered by a traditional Centralised Exchange OrderBook and  also the inherent transparency and decentralization offered by a Decentralised Exchange.
+  The R.F.Q model provides the convenience,capital efficeincy and price discovery offered by a traditional Centralised Exchange OrderBook and  also the inherent transparency and decentralization offered by a Decentralised Exchange.
 
 * ### Efficient Price data Availabilty <br>
   Centry uses a Price Feed Canister  that utilises the [XRC](https://internetcomputer.org/docs/current/developer-docs/integrations/exchange-rate/exchange-rate-canister) built by DFINITY which uses HTTP outcalls to get accurate and timely price data for settling trades,thereby greatly improving trade excution speed . <br>

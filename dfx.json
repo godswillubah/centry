@@ -1,0 +1,25 @@
+{
+  "canisters": {
+    "centry_backend": {
+      "main": "src/centry_backend/main.mo",
+      "type": "motoko"
+    },
+    "centry_frontend": {
+      "dependencies": [
+        "centry_backend"
+      ],
+      "source": [
+        "src/centry_frontend/assets"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

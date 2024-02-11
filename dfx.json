@@ -1,17 +1,16 @@
 {
   "canisters": {
-    "centry_backend": {
-      "main": "src/centry_backend/main.mo",
+    "Main": {
+      "main": "src/main.mo",
       "type": "motoko"
     },
-    "centry_frontend": {
-      "dependencies": [
-        "centry_backend"
-      ],
-      "source": [
-        "src/centry_frontend/assets"
-      ],
-      "type": "assets"
+    "PriceFeed": {
+      "main": "src/PriceFeed.mo",
+      "type": "motoko"
+    },
+    "ClearingHouse": {
+      "main": "src/ClearingHouse.mo",
+      "type": "motoko"
     }
   },
   "defaults": {

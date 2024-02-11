@@ -1,59 +1,70 @@
-# centry
+# Centry<br>
+Centry is decentralised perpetual trading platform that is powered by the Request For Quote (R.F.Q)model to ensure great price discovery and thereby trades are executed with __0__ Slippage and M.E.V resistance.
 
-Welcome to your new centry project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+__The Request for Quote(R.F.Q)__ model is the  most capital efficient model of price discovery that is comprised of liquidity providers,who can provide liquidty to just one asset by setting Quotes.
+A __Quote__ here is an offer by anyone to take the other end of a trade for a certain premium discount that is known before trade,that is the persosn is willing to take the other end of the trade and as an incentive,they are offerd a premium .
+>Assuming a trader wants to buy BTC with $USD and the price of BTC is at $35,000 ,a liquidity  might set a quote to take the other end of the trade for a premium of 0.02 percent that is the liquidity provider is accepting to take that offer at a price that is 0.02 percent higher than the current price <br>
+> i.e liquidty provider would sell at a rate of <br> 
+__current BTC price + 0.02 % of current BTC price__.<br>
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+Centry utilises this model to ensure capital eficient trades with zero slippage and best price discovery by enabling the trader to settle their trades with any quote of their choice provided by a liquidity provider 
 
-To learn more before you start working with centry, see the following documentation available online:
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Motoko Programming Language Guide](https://internetcomputer.org/docs/current/motoko/main/motoko)
-- [Motoko Language Quick Reference](https://internetcomputer.org/docs/current/motoko/main/language-manual)
 
-If you want to start working on your project right away, you might want to try the following commands:
+## Unique Features of Centry<br>
+ * ### Decentralised Leverage Mechanism<br>
+   Centry operates with a decentralised levarage model through the use of third party pools which allow traders to borrow capital to take a position .These pools set pre defined conditions such as 
+   * The assets that can be traded for the asset being borrowed
+   *  The minimum capital that traders need to put up as collateral
+   *  The maximum debt a trader can take to trade a particular asset.<br>
+   
+   These pools work in a decentralised manner and is not controlled by Centry .
 
-```bash
-cd centry/
-dfx help
-dfx canister --help
-```
+* ### Request For Quote(R.F.Q)<br>
+  The R.F.O model provides the convenience,capital efficeincy and price discovery offered by a traditional Centralised Exchange OrderBook and  also the inherent transparency and decentralization offered by a Decentralised Exchange.
 
-## Running the project locally
+* ### Efficient Price data Availabilty <br>
+  Centry uses a Price Feed Canister  that utilises the [XRC](https://internetcomputer.org/docs/current/developer-docs/integrations/exchange-rate/exchange-rate-canister) built by DFINITY which uses HTTP outcalls to get accurate and timely price data for settling trades,thereby greatly improving trade excution speed . <br>
 
-If you want to test your project locally, you can use the following commands:
 
-```bash
-# Starts the replica, running in the background
-dfx start --background
+  ### To deploy canisters <br>
+  ```bash
+     #start your local replica
+   
+   dfx start --background
 
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
-```
+     #create an empty canister for Main and get the canisterID
+    dfx canister create --network ic Main
+   
+    export mainID=$(dfx canister id --network ic Main)
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
+  
+  ```
+     deploy priceFeed and gets its canister id 
+     ```bash
 
-If you have made changes to your backend canister, you can generate a new candid interface with
+    dfx deploy --network ic PriceFeed --argument "(principal \"uf6dk-hyaaa-aaaaq-qaaaq-cai\")"
+    
+    export priceFeedID=$(dfx canister id --network ic PriceFeed)
+     
+     ```
 
-```bash
-npm run generate
-```
+     deploy the ClearingHouse canister and get its id
+  ```bash
+       #deploy the clearingHouse canister
 
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
+    dfx deploy --network ic ClearingHouse --argument "(principal \"${mainID}\",principal \"${priceFeedID}\")" ;
 
-If you are making frontend changes, you can start a development server with
+    export clearingHouseID=$(dfx canister id --network ic ClearingHouse) 
 
-```bash
-npm start
-```
+  ``` 
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+    finally deploy the code of the main canister on the network 
+  ```bash
+      dfx deploy --network ic Main --argument "(principal \"${clearingHouseID}\",principal \"${priceFeedID}\")"
+  ```
 
-### Note on frontend environment variables
+  * [Main](#link)<br>
+  * [PriceFeed](#link)<br>
+  * [ClearingHouse](#link)
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
-
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
